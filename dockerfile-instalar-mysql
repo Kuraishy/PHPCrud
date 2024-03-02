@@ -1,0 +1,50 @@
+#para instalar dependencias dentro de los contenedores
+#en este caso el mysql driver para el PDO
+
+#usando la ultima imagen
+FROM php:apache
+
+#mandando una senal
+RUN echo "Hola desde dockerfile"
+
+#instalalndo el PDO Mysql Driver
+RUN docker-php-ext-install pdo_mysql
+
+
+#se usa el commando docker-compose build (docker-compose up --build [para forzar])
+#para la reconstruccion de la imagne usando los parametros qeuridos
+#en este caso, para que la nueva imagen contenga el driver pdo_mysql
+#despues del docker-compose build se usa docker-compose up -d para iniciar la imagen
+
+
+
+
+#------------MUESTRA SOLO LO QUE HAY DENTRO DE LA CARPETA ESPECIFICA -------------------
+#cambiar la carpeta root para que la carpeta /public/ (en vscode) sea contenga el document root
+#esto es para que no puedan acceder a datos fuera del folder /public/ 
+# para que solo lo que esta en la carpeta ./public sea visible y lo demas no (./otros)
+# /public
+#   ->index.php
+#   ->hola.php    
+#/otros
+#   ->helpers.php
+#   ->form.php
+
+#solo se mostrara el contenido de la carpeta /public. 
+#asi se podra acceder a localhost:port/index y localhost:port/hola.php
+
+#en lugar de poner un nombre largo y que se pueda acceder a carpetas no deseadas
+# localhost:port/public/index.php  o   localhost:port/public/hola.php
+# localhost:port/otros/helpers.php o localhost:port/otros/form.php 
+
+
+#se crea la variable del nuevo directorio
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+#This replaces all mentions to /var/www/html in Apache's configuration, to /var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+
+# ACTIVANDO ROUTERS_----------------------------------------------------------------
+#activando modulos de apache (mod routers)
+RUN a2enmod rewrite

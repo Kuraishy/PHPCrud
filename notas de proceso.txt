@@ -1,0 +1,3 @@
+
+- se crea un public folder con el index
+- se crea el helpers.php y la funcion para obtener el basepath absoluto (__DIR__)

@@ -1,0 +1,59 @@
+version: '4' #docker version
+
+name: phpproyecto 
+services:
+  backend:
+    container_name: phpBackend
+    image: php:apache #latest version
+    volumes: #sync conection between container and host
+      - "./:/var/www/html" #todo este folder al folder del container
+      #crear un folder dentro de donde estamos trabajando para que ese
+      #folder contenga todo el php y lo que esta fuera del folder no pueda
+      #se accedido desde la pagina
+    ports:
+      - 3001:80 #3001 local
+      - 443:443 # furure ssl trafic
+    build: 
+      context: .
+      dockerfile: dockerfile-instalar-mysql
+
+  database:
+    container_name: database
+    image: mysql:8.3.0
+    environment:
+      MYSQL_DATABASE: php_database
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - ./initSQLDB/create_table.sql://docker-entrypoint-initdb.d/create_tables.sql
+
+  # #mejor que phpmyadmin?
+  # adminier:
+  #   container_name: adminer
+  #   image: adminer:latest
+  #   ports:
+  #     - 8001:8080
+  #   environment:
+  #     - ADMINER_DESIGN=dracula
+  #     - ADMINER_DEFAULT_SERVER=database
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin #php my admin
+    ports:
+      - 8001:80
+    environment:
+      - PMA_HOST=database #nombre del host
+      - PMA_PORT=3306
+      #se usa el user y password puestos para el DB
+
+
+#para conectar con mysql
+#$host = 'database'; //al parecer se puede usar el nombre del container puesto en el docker-compose.yml
+#$port = '3306';
+#$dbName = 'php_database';
+#$dbUserName = 'root';
+#$dbPassword = 'password';
+
+#$dsn = "mysql:host={$host};port={$port};dbname={$dbName};charset=utf8";
+#
+#
