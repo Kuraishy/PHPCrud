@@ -79,3 +79,36 @@ el archivo helpers.php ya no es necesario
     -se borra el array anterior
     //asociando metodo y uri al router
     $router->get('/uri', 'controllers/listings.php');
+
+-crear database class conection with PDO
+    -recibe un mapa de config en el constructor
+        [host,port,dbname,username,password]
+        -se activa la opcion ATTR_ERROMDOE=>ERRMODE_EXCEPTION,PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        -se conecta mediante un try and catch 
+            try-> conn = new PDO(dsn,confi..);
+            catch-> PDOexecption $e ->getMessage()
+-se crea el folder config donde esta un archivo db.php
+    se debe usar el nombre del contenedor
+    return [
+    //'host' => '127.0.0.1',
+    'host' => 'database', //using docker container name
+    'port' => 3306,
+    'dbname' => 'php_database',return ['host' => 'localhost','port' => 3306,..]
+
+-se importa el db class despues de importar el router class en index.php
+
+-Query method
+    -adding query method in db class
+     try {
+            //creating statemnet
+            $stmt = $this->conn->prepare($query); $stmt->execute();
+            return $stmt;
+        } catch (PDOException $e) {throw new Exception("query failed to execute {$e->getMessage()}");}
+    -el query es llamado desde el home.php controller
+        $config = require basePath('config/db.config.php');
+        $db = new Database($config);
+        $listing = $db->query("SELECT * FROM listings LIMIT 6")->fetchAll(); //gegting all
+        inspect($listing);
+        loadView('home');
+
+//passing data to view

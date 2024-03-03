@@ -7,11 +7,23 @@ require '../helpers.php'; //funcion del basepath
 
 // loadView("home"); //no se necesita el require porque este es ejecutado dentro de la funcion
 // $routes = rotu
-
-
-
-//importando router class
+//------importando ------------
+require basePath('Database.php');
 require basePath('Router.php');
+
+//-------DB-------------------
+//impoertando DB
+// require basePath('Database.php');
+// //importando Database config
+// $dbConfig = require basePath('config/db.config.php');
+// //importando Database class
+// // require basePath('Database.php');
+
+// $db = new Database($dbConfig);
+
+
+//------ROUTER-------------
+//instantiating router
 $router = new Router();
 //importando las rutas
 $routes = require basePath('routes.php');
