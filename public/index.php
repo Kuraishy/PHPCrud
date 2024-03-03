@@ -8,8 +8,15 @@ require '../helpers.php'; //funcion del basepath
 // loadView("home"); //no se necesita el require porque este es ejecutado dentro de la funcion
 // $routes = rotu
 
-//router logic
-$uri = $_SERVER['REQUEST_URI'];
 
-//usando enviando $uri al router
-require basePath("router.php");
+
+//importando router class
+require basePath('Router.php');
+$router = new Router();
+//importando las rutas
+$routes = require basePath('routes.php');
+//obtencion de uri y request
+$uri = $_SERVER['REQUEST_URI'];
+$method = $_SERVER['REQUEST_METHOD'];
+//pasando checando si existe el uri y metodo
+$router->route($uri, $method);

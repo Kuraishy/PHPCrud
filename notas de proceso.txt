@@ -56,3 +56,26 @@ el archivo helpers.php ya no es necesario
 //refaactor to class
 
 - se crea la clase router en Router
+    -array de routes
+    -funcion para agrgar routes como map [method, uri, controller]
+    -funciones get,post para agregar routes
+    -funcion route() que recive uri y metodo y loopea en el array para encontrar la direccion
+         if ($route['uri'] === $uri && $route['method'] === $method) {
+                require basePath($route['controller']);
+                return;
+            }
+    - sale del script exit;
+- se importa el router y routes en index.php
+    
+    require basePath('Router.php'); //importando router class
+    $router = new Router();
+    $routes = require basePath('routes.php'); //importando las rutas
+    $uri = $_SERVER['REQUEST_URI'];//obtencion de uri
+    $method = $_SERVER['REQUEST_METHOD'];//obtencion metodo
+    //pasando checando si existe el uri y metodo
+    $router->route($uri, $method);`
+
+-se associan las routes con sus metodos y controladores en routes.php
+    -se borra el array anterior
+    //asociando metodo y uri al router
+    $router->get('/uri', 'controllers/listings.php');
