@@ -1,11 +1,51 @@
 <?php
 //importando routes
-$routes = require basePath("routes.php");
 
-if (array_key_exists($uri, $routes)) {
-    // echo "true";
-    require(basePath($routes[$uri]));
-} else {
-    http_response_code(404);
-    require(basePath($routes['404']));
+class Router
+{
+    protected $routes = [];
+
+    private function registerRoute($method, $uri, $controller)
+    {
+        $this->routes = [
+            'method' => $method,
+            'uri' => $uri,
+            'controller' => $controller,
+        ];
+    }
+
+
+    /**
+     * Adding a Get Rout
+     * 
+     * @param string $uri
+     *@param string $controller
+     * @return void
+     */
+    public function get($uri, $controller)
+    {
+        $this->registerRoute("GET", $uri, $controller);
+    }
+
+    /**
+     * Adding a POST Rout
+     * 
+     * @param string $uri
+     *@param string $controller
+     * @return void
+     */
+    public function post($uri, $controller)
+    {
+    }
+
+    /**
+     * Adding a POST Rout
+     * 
+     * @param string $uri
+     *@param string $controller
+     * @return void
+     */
+    public function put($uri, $controller)
+    {
+    }
 }

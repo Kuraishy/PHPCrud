@@ -54,3 +54,5 @@ el archivo helpers.php ya no es necesario
         require basePath("router.php");
 
 //refaactor to class
+
+- se crea la clase router en Router
