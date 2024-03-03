@@ -1,3 +1,56 @@
 
 - se crea un public folder con el index
 - se crea el helpers.php y la funcion para obtener el basepath absoluto (__DIR__)
+
+- en el index.php se importa el archivo helpers.php y llama al
+home.view.php.
+- se separa el home.view.php en varias partials y son llamadas
+desde el home.view.php con las funciones del helper (basePath)
+debido a que el home.view.php es llamado desde index.php. este archivo hereda todo lo llamado desde index.php por lo que importar
+el archivo helpers.php ya no es necesario
+
+-se crea el helper loadview para cargar la vie mas rapdio
+    - se usa loadView() y ya no se necesita el require porque el requiere es llamado
+    dentro de la funcion loadView() 
+
+-se crea el helper loadPartials() con su checador si existe el archivo
+-se crea el helper inspect() que muestra la variable dentro de <pre></pre>
+-se crea el helper inspectAndDie() lo mismo que arriba pero tien die(var_dump(..))
+
+////ROUTERS/////
+
+- se crea el .htacess con sus datos.
+- en index se crea el array de routes
+- con array_key_exists se checa que $_SERVER["REQUEST_URI"] exista en los routes
+    -si existe se executa el require basepath(controller.php)
+    -sino se executa el require basepath(404.php)
+
+- en el controller.php se carga el loadview() se la vista
+    -index.php -> usando el array se routes se llama al
+    controlador ("/"->home.controller.php)
+    -home.controller.php -> se loadView(home.view.php)
+    -home.view.php -> muestra el html
+
+- se crean las views usando los partials
+
+- se exporta el router y routes a otro archivo en el root
+    -routes.php -> return ['/' => 'controllers/home.php', //devuelve el arreglo de routes
+
+    -router.php -> (importa los routes y checa)
+        //importando routes
+        $routes = require basePath("routes.php");
+        if (array_key_exists($uri, $routes)) {
+            // echo "true";
+            require(basePath($routes[$uri]));
+        } else {
+            http_response_code(404);
+            require(basePath($routes['404']));
+        }
+
+    -index.php ->  obtiene el request uri y lo envia al router.php
+        //obtiene el uri
+        $uri = $_SERVER['REQUEST_URI'];
+        //usando enviando $uri al router
+        require basePath("router.php");
+
+//refaactor to class

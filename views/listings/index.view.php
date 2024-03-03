@@ -4,11 +4,8 @@
 <!-- por lo cual ya no se necesita importar helpers.php y se pueden usar -->
 <!-- sus funciones -->
 <?php
-
-
 // require basePath('views/partials/head.php');
 loadPartial("head");
-
 ?>
 <!-- Nav -->
 <?php
@@ -16,8 +13,6 @@ loadPartial("head");
 loadPartial("navbar");
 ?>
 
-<!-- Showcase -->
-<?php loadPartial("showcase-search"); ?>
 
 <!-- Top Banner -->
 <?php loadPartial("top-banner"); ?>
@@ -175,10 +170,7 @@ loadPartial("navbar");
                 </div>
             </div>
         </div>
-        <a href="/listings" class="block text-xl text-center">
-            <i class="fa fa-arrow-alt-circle-right"></i>
-            Show All Jobs
-        </a>
+
 </section>
 
 <!-- Bottom Banner -->

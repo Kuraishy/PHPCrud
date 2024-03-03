@@ -45,3 +45,75 @@ en la carpeta public se crea un documento .htaccess que contenga:
 
 
 
+///CONFIGURACION DE ROUTES//
+.htaccess vs apache server config 
+
+-   ambos sirven para activar las routes en apache php
+-   apache confiuration file es mas rapido que el .htaccess
+-   el .htaccess es mas facil de configurar y no se ve el impacto en paginas de low trafic
+-  if you have administrative access to the server and require centralized control over 
+  configuration settings, 
+  it's generally preferable to use Apache server configuration files.
+-   If you need flexibility and want users to have the ability to customize settings
+    for their directories independently, .htaccess files can be a convenient option, 
+    but be mindful of the potential performance and security implications.
+
+Apache Server Configuration File:
+    Pros:
+        Performance: have better performance compared to .htaccess files because they 
+        are read once during server startup, whereas .htaccess files are 
+        read for every request.
+
+        Centralized Control: centralized control over configuration settings 
+        for the entire server or specific virtual hosts.
+
+        Security: Since .htaccess files can be overridden by users, 
+        placing configuration directives in the main server configuration 
+        can enhance security by restricting the ability to modify settings.
+
+    Cons:
+        Requires Server Access: which may not always be practical,
+        especially in shared hosting environments 
+
+        Restart Required: Changes to the main server configuration require to be restarted
+
+.htaccess File:
+
+    Pros:
+        Flexibility: allowing configuration settings to be applied on a per-directory
+        basis without requiring server-wide changes.
+
+        Ease of Use: changes take effect immediately without needing to restart Apache.
+
+        User-Specific Configuration: Users with access to .htaccess files
+        (e.g., website owners) can customize configuration settings 
+        for their directories without affecting other users or the server as a whole.
+
+    Cons:
+        Performance Overhead: Apache must read and parse for every request, 
+        which can incur a performance overhead, especially on high-traffic sites.
+
+        Security Concerns: Allowing users to override server configuration settings via.
+        htaccess files can pose security risks if not properly managed.
+
+
+APACHE CONFIGURATION File
+
+//config file
+Create a file named myapp.conf in a directory called apache-config (you can name them as per your preference):
+
+<VirtualHost *:80>
+    ServerName myapp.local
+    DocumentRoot /var/www/html
+
+    <Directory /var/www/html>
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+
+//DOCKER FILE
+FROM php:apache
+COPY ./src /var/www/html
+COPY ./apache-config/myapp.conf /etc/apache2/sites-available/myapp.conf
+RUN a2ensite myapp.conf

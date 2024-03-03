@@ -1,0 +1,15 @@
+#This directive enables the rewriting engine for URL rewriting.
+RewriteEngine on
+
+#checks if the requested URL does not map to an existing file.
+RewriteCond %{REQUEST_FILENAME} !-f
+
+#checks if the requested URL does not map to an existing directory.
+RewriteCond %{REQUEST_FILENAME} !-d
+
+#This rule captures the requested URL path (excluding the domain) using the regular expression
+#^(.*)$ and redirects it to /index.php. Let's break down the flags used:
+#   [NC]: This flag makes the pattern matching case-insensitive.
+#   [L]: This flag indicates that if the rule matches, no further rules should be processed.
+#   [QSA]: This flag stands for "query string append" and instructs Apache to append the query string from the original request to the rewritten URL.
+RewriteRule ^(.*)$ /index.php [NC,L,QSA]
