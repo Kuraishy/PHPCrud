@@ -21,13 +21,16 @@ function basePath(string $path = '')
  * @param string $name
  * @return void
  */
-function loadView(string $name)
+function loadView(string $name, $data = [])
 {
     // require basePath("views/{$name}.view.php");
     $viewPath = basePath("views/{$name}.view.php");
 
     //checar si existe
     if (file_exists($viewPath)) {
+
+        //extrallendo los datos del array
+        extract($data);
         require $viewPath; //importalo
         return;
     }
@@ -83,4 +86,15 @@ function inspectAndDie($value)
     echo "<pre>";
     die(var_dump($value)); //kill script after
     echo "</pre>";
+}
+
+/**
+ * format salary for view files
+ *
+ * @param string $salary
+ * @return string Formatted Salary
+ */
+function formatSalary($salary)
+{
+    return '$' . number_format(floatval($salary));
 }

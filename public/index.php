@@ -27,8 +27,8 @@ require basePath('Router.php');
 $router = new Router();
 //importando las rutas
 $routes = require basePath('routes.php');
-//obtencion de uri y request
-$uri = $_SERVER['REQUEST_URI'];
+//obtencion de uri y request sin incluir el query
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
 //pasando checando si existe el uri y metodo
 $router->route($uri, $method);

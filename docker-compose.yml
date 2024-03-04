@@ -24,6 +24,8 @@ services:
       MYSQL_DATABASE: php_database
       MYSQL_ROOT_USER: root
       MYSQL_ROOT_PASSWORD: password
+    ports:
+      - 3307:3306
     volumes:
       - ./initSQLDB/create_table.sql://docker-entrypoint-initdb.d/create_tables.sql
 
@@ -37,13 +39,14 @@ services:
   #     - ADMINER_DESIGN=dracula
   #     - ADMINER_DEFAULT_SERVER=database
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin #php my admin
-    ports:
-      - 8001:80
-    environment:
-      - PMA_HOST=database #nombre del host
-      - PMA_PORT=3306
+  # phpmyadmin:
+  #   image: phpmyadmin/phpmyadmin #php my admin
+  #   ports:
+  #     - 8001:9010
+  #   environment:
+  #     - PMA_HOST=database #nombre del host
+  #     - PMA_PORT=3306
+  #     - APACHE_HTTP_PORT_NUMBER=9010
       #se usa el user y password puestos para el DB
 
 

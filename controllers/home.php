@@ -6,5 +6,6 @@ $config = require basePath('config/db.config.php');
 $db = new Database($config);
 //fetchin
 $listing = $db->query("SELECT * FROM listings LIMIT 6")->fetchAll(); //gegting all
-inspect($listing);
-loadView('home');
+// inspect($listing);
+//cargando view y enviando informacion
+loadView('home', ['listings' => $listing,]);

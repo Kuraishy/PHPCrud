@@ -83,10 +83,20 @@ el archivo helpers.php ya no es necesario
 -crear database class conection with PDO
     -recibe un mapa de config en el constructor
         [host,port,dbname,username,password]
-        -se activa la opcion ATTR_ERROMDOE=>ERRMODE_EXCEPTION,PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        -se activa la opcion ATTR_ERROMDOE=>ERRMODE_EXCEPTION,PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //para recibir mapa $listing['columna']
         -se conecta mediante un try and catch 
-            try-> conn = new PDO(dsn,confi..);
+            try-> conn = new PDO(dsn,confi..,option);
             catch-> PDOexecption $e ->getMessage()
+    -para recibir como clase 
+         $options = [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            //no numeric index
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
+        ];
+
+    pasa a 
+
+
 -se crea el folder config donde esta un archivo db.php
     se debe usar el nombre del contenedor
     return [
@@ -99,11 +109,18 @@ el archivo helpers.php ya no es necesario
 
 -Query method
     -adding query method in db class
-     try {
+     public function query($query, $params = [])
+        try 
             //creating statemnet
-            $stmt = $this->conn->prepare($query); $stmt->execute();
+            $stmt = $this->conn->prepare($query);
+            //bind named params
+            foreach ($params as $param => $value) 
+                $stmt->bindValue(':', $param, $value);
+            $stmt->execute();
             return $stmt;
-        } catch (PDOException $e) {throw new Exception("query failed to execute {$e->getMessage()}");}
+        catch (PDOException $e) 
+            throw new Exception("query failed to execute {$e->getMessage()}");
+
     -el query es llamado desde el home.php controller
         $config = require basePath('config/db.config.php');
         $db = new Database($config);
@@ -112,3 +129,34 @@ el archivo helpers.php ya no es necesario
         loadView('home');
 
 //passing data to view
+    -dentro del controlador -> loadView('home', ['listings' => $listing,]);
+    - se anade un array vacio al parametro de loadView en helpers
+        function loadView(string $name, $data = [])
+            if (file_exists($viewPath)) 
+                extract($data);  //extrallendo los datos del array
+                require $viewPath; //importalo
+    -en home.view.php se accede a lo enviado con <!-- <?php inspect($listings) ?> -->
+        <?php foreach ($listings as $listing) : ?>
+              <h2 class="text-xl font-semibold"><?= $listing['title'] ?></h2>
+        <? endforeach ?>
+        <a href="/listing/<?= $listing['id'] ?>
+
+    -usando objetos
+        <h2 class="text-xl font-semibold"><?= $listing['title'] ?></h2>
+        <h2 class="text-xl font-semibold"><?= $listing->title ?></h2>
+
+//REsumen
+    -entramos al website (index.php) -> index.php = ve el uri y el metodo y lo pasa al routclas -> Route.php = mapea a controladores =>home.controller.php= inicia una nueva instancia con el db y hace el fetchAll, luego envia el resultado al view -> home.view.php = se accede al listado mediante un mapa
+
+-sening query strings
+    /listing?id=<?= $listing->id 
+    -se agrega al route'/listings','controllers/listings/show.view.php
+    -se modifica el uri en index.php para excluir query
+        de $uri = $_SERVER['REQUEST_URI'];
+        a $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    -en el show.php controller
+        -se importa el db y se crea una instancia
+        -se obitne el id con $_GET['id']
+        -se carga el view (show.view.php) y se manda los datos
+
+    //namespaces controller classes router
