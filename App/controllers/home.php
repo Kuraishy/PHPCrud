@@ -1,5 +1,6 @@
 <?php
 
+use Framework\Database;
 //importando la configuracion
 $config = require basePath('config/db.config.php');
 //creando db 
@@ -8,4 +9,4 @@ $db = new Database($config);
 $listing = $db->query("SELECT * FROM listings LIMIT 6")->fetchAll(); //gegting all
 // inspect($listing);
 //cargando view y enviando informacion
-loadView("listings/index", ['listings' => $listing,]);
+loadView('home', ['listings' => $listing,]);

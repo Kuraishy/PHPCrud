@@ -1,0 +1,17 @@
+{
+
+    "name":"rick/rick",
+    "description": "Job listing application",
+    "authors": [{
+        "name": "Rick",
+        "email": "legoric@fvd.com"
+    }],
+    "autoload": {
+        "psr-4": {
+       
+            "Framework\\":"Framework/",
+            "App\\":"App/"
+        }
+    }
+    
+}

@@ -1,15 +1,30 @@
 <?php
+//using composer 
+require __DIR__ . '/../vendor/autoload.php';
+
 //importa el archivo de helpers
 require '../helpers.php'; //funcion del basepath
 //como el archivo helpers ya esta importando. se puede llevar
 //el importe a sus child como si fuese react prop
 // require basePath('views/home.view.php'); //helpers sera enviado a home.view
 
+//importando framwrodk router
+use Framework\Router;
+
 // loadView("home"); //no se necesita el require porque este es ejecutado dentro de la funcion
 // $routes = rotu
 //------importando ------------
-require basePath('Database.php');
-require basePath('Router.php');
+// require basePath('Framework/Database.php');
+// require basePath('Framework/Router.php');
+//-----AUTO LOADER---------------------
+// spl_autoload_register(function ($class) {
+//     //maping file to a name
+//     $path = basePath('Framework/' . $class . '.php');
+//     if (file_exists($path)) {
+//         require($path);
+//     }
+// });
+
 
 //-------DB-------------------
 //impoertando DB

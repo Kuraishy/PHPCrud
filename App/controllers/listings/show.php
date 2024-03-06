@@ -1,6 +1,6 @@
 <?php
 //imporando db
-
+use Framework\Database;
 //importando la configuracion
 $config = require basePath('config/db.config.php');
 //creando db 

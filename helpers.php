@@ -24,7 +24,7 @@ function basePath(string $path = '')
 function loadView(string $name, $data = [])
 {
     // require basePath("views/{$name}.view.php");
-    $viewPath = basePath("views/{$name}.view.php");
+    $viewPath = basePath("App/views/{$name}.view.php");
 
     //checar si existe
     if (file_exists($viewPath)) {
@@ -48,7 +48,7 @@ function loadPartial(string $name)
 {
 
     // require basePath("views/partials/{$name}.php");
-    $viewPartial = basePath("views/partials/{$name}.php");
+    $viewPartial = basePath("App/views/partials/{$name}.php");
 
     //ve las secciones
     // inspect($viewPartial);

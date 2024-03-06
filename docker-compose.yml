@@ -16,6 +16,7 @@ services:
     build: 
       context: .
       dockerfile: dockerfile-instalar-mysql
+    
 
   database:
     container_name: database

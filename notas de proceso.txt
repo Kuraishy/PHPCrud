@@ -160,3 +160,55 @@ el archivo helpers.php ya no es necesario
         -se carga el view (show.view.php) y se manda los datos
 
     //namespaces controller classes router
+
+    //folder refaactor
+    folders
+        -framework
+            -Database
+            -Router
+        -App
+            -controllers
+            -views
+
+    //Creating autoloader
+    -will allow us to have a bunch of classes and not have to require them 
+    individua. avoid require...
+    -en Index.php
+            //------importando ------------
+            // require basePath('Framework/Database.php');
+            // require basePath('Framework/Router.php');
+            //-----AUTO LOADER---------------------
+            spl_autoload_register(function ($class) {
+                //maping file to a name
+                $path = basePath('Framework/' . $class . '.php');
+                if (file_exists($path)) {
+                    require($path);
+                }});
+    --installing composer manager
+        -creating composer.json
+            {"name":"rick",
+            "description": "Job listing application",
+            "authors": [{
+                "name": "Rick",
+                "email": "legoric@fvd.com",}],
+            "autoload": {
+                "psr-4": {
+                    // sepecify name spaces and folder
+                    "Framework\\":"Framework/",
+                    "App\\":"App/"
+                }}}
+    --una vez ejecutado y todo correcto. se creara una carpeta llamada Vendor
+    -en index se borra todo los require y son remplazados por 
+        //using composer 
+        require __DIR__.'/../vendor/autoload.php'
+
+    -creating namesapaces
+        -en folder framework
+            -en cada archivo agregar a "namespace Framework"
+            -para usar Router.php
+                1- $router = new Framework\Router();
+                2 - use Framework\router;
+                    $router = new Router();
+            -en database como se usa pDO se tiene que importar use PDO;
+
+

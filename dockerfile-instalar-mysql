@@ -38,6 +38,11 @@ RUN docker-php-ext-install pdo_mysql
 # localhost:port/otros/helpers.php o localhost:port/otros/form.php 
 
 
+
+#moving using PUBLIC files only------------------------------------
+# it sets the environment variable APACHE_DOCUMENT_ROOT to /var/www/html/public.
+# It uses the sed command to replace all occurrences of /var/www/html in Apache's configuration files with the value of the APACHE_DOCUMENT_ROOT variable (/var/www/html/public).
+#Overall, these commands modify Apache's configuration to use the specified document root (/var/www/html/public) instead of the default (/var/www/html).
 #se crea la variable del nuevo directorio
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 #This replaces all mentions to /var/www/html in Apache's configuration, to /var/www/html/public
@@ -48,3 +53,43 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.
 # ACTIVANDO ROUTERS_----------------------------------------------------------------
 #activando modulos de apache (mod routers)
 RUN a2enmod rewrite
+
+
+# #installing composer-----------------------------------
+
+# #allow super user-set this if you use composer as a super user at all times
+# #like in docker containers
+# ENV COMPOSER_ALLOW_SUPERUSER=1
+
+# #Obtain composer using muti-stoge build
+# COPY --from=composer:latest /user/bin/composer urs/bin/composer
+
+# #here we are copying only composer.json and composer.lock
+
+# #right before doing composer install
+# #composer install will be executed only when composer.json or composer.lock have indeed changed
+# COPY ./composer.* ./
+# #install
+# RUN composer install --prefer-dist --no-dev --no-scripts --no-progess --no-interaction
+
+# #copy application files to working directory
+# COPY ./ .
+
+# #run composer 
+# RUN composer dump-autoload --optimize
+
+
+# # Download and install Composer
+# ENV COMPOSER_ALLOW_SUPERUSER=1
+# # COPY --from=composer /usr/bin/composer /usr/bin/composer
+# # RUN composer install
+# COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+# Install dependencies
+
+
+ENV COMPOSER_ALLOW_SUPERUSER=1
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+COPY ./composer.* ./
+RUN composer install --prefer-dist --no-dev --no-scripts --no-progress --no-interaction
+COPY . .
+RUN composer dump-autoload --optimize

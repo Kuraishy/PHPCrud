@@ -1,5 +1,6 @@
 <?php
 //importando routes
+namespace Framework;
 
 class Router
 {
@@ -99,7 +100,7 @@ class Router
             //si el uri y metodo concuerda con lo que tenemo
             if ($route['uri'] === $uri && $route['method'] === $method) {
                 //imopta el controlador queirdo y lo pasa al siguiente archivo
-                require basePath($route['controller']);
+                require basePath('App/' . $route['controller']);
                 return;
             }
         }
