@@ -11,15 +11,22 @@ class Router
      *
      * @param string $method
      * @param string $uri
-     * @param string $controller
+     * @param string $action
      * @return void
      */
-    private function registerRoute($method, $uri, $controller)
+    // private function registerRoute($method, $uri, $controller)
+    private function registerRoute($method, $uri, $action)
     {
+
+        //controler -> HomeController@index
+        list($controller, $controllerMethod) = explode('@', $action); //[homeController,index]
+        // inspectAndDie($arr);
+
         $this->routes[] = [ //agregando
             'method' => $method,
             'uri' => $uri,
             'controller' => $controller,
+            'controllerMethod' => $controllerMethod
         ];
     }
 
@@ -100,7 +107,14 @@ class Router
             //si el uri y metodo concuerda con lo que tenemo
             if ($route['uri'] === $uri && $route['method'] === $method) {
                 //imopta el controlador queirdo y lo pasa al siguiente archivo
-                require basePath('App/' . $route['controller']);
+                // require basePath('App/' . $route['controller']);
+
+                //extract controller and controller method
+                $controller = 'App\\Controllers\\' . $route['controller'];
+                $controllerMethod = $route['controllerMethod'];
+                //instatiate the controller and call the method
+                $controllerInstance = new $controller();
+                $controllerInstance->$controllerMethod();
                 return;
             }
         }

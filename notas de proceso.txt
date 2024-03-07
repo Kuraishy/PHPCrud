@@ -212,3 +212,29 @@ el archivo helpers.php ya no es necesario
             -en database como se usa pDO se tiene que importar use PDO;
 
 
+//Refactor of Router class (controller methods instead of files)
+    -routes
+        -se modifican los index $router->get('/', 'HomeController@index');
+
+    -Router
+        - se extrae informacion del string enviado (RegisterRoute)
+            //controler -> HomeController@index
+            list($controller, $controllerMethod) = explode('@', $action); //[homeController,index]
+            $this->routes[] = [ //agregando
+                'method' => $method,
+                'uri' => $uri,
+                'controller' => $controller,
+                'controllerMethod' => $controllerMethod
+            ];
+        - route() method
+             //extract controller and controller method
+            $controller = 'App\\Controllers\\' . $route['controller'];
+            $controllerMethod = $route['controllerMethod'];
+            //instatiate the controller and call the method
+            $controllerInstance = new $controller();
+            $controllerInstance->$controllerMethod();
+            return;
+        
+        -al ir a la pagina / se ejecutara el HomeController constructor y luego se usara el metodo index(). esto es bueno para los middleware
+
+//103
