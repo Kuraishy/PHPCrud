@@ -238,3 +238,21 @@ el archivo helpers.php ya no es necesario
         -al ir a la pagina / se ejecutara el HomeController constructor y luego se usara el metodo index(). esto es bueno para los middleware
 
 //103
+    -se mueve todo al homeController
+        -la base de datos es conectada en el constructor del HomeController e iniciada
+    - en HomeController@index se ejecuta el query para el fetchall
+         $listing = $this->db->query("SELECT * FROM listings LIMIT 6")->fetchAll(); //gegting all
+        // inspect($listing);
+        //cargando view y enviando informacion
+        loadView('home', ['listings' => $listing,]);
+
+    -fetching from a controller function
+        $id = $_GET['id'] ?? '';
+        $params = [
+            'id' => $id
+        ];
+        //llamando a db
+        $listing = $this->db->query("SELECT * FROM listings WHERE id=:id", $params)->fetch();
+        loadView('listings/show', ['listing' => $listing]);
+
+104

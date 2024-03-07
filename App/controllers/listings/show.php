@@ -1,20 +1,20 @@
 <?php
-//imporando db
-use Framework\Database;
-//importando la configuracion
-$config = require basePath('config/db.config.php');
-//creando db 
-$db = new Database($config);
+// //imporando db
+// use Framework\Database;
+// //importando la configuracion
+// $config = require basePath('config/db.config.php');
+// //creando db 
+// $db = new Database($config);
 
-//getting query
-$id = $_GET['id'];
-inspect($id);
+// //getting query
+// $id = $_GET['id'];
+// inspect($id);
 
-//fetching listing
-$params = ['id' => $id];
-$listing = $db->query('SELECT * FROM listings WHERE id=:id', $params)->fetch();
+// //fetching listing
+// $params = ['id' => $id];
+// $listing = $db->query('SELECT * FROM listings WHERE id=:id', $params)->fetch();
 
 
-// inspect($listing);
-//enviando a view
-loadView('listings/show', ['listing' => $listing,]);
+// // inspect($listing);
+// //enviando a view
+// loadView('listings/show', ['listing' => $listing,]);
