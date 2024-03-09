@@ -44,6 +44,6 @@ $router = new Router();
 $routes = require basePath('routes.php');
 //obtencion de uri y request sin incluir el query
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$method = $_SERVER['REQUEST_METHOD'];
+// $method = $_SERVER['REQUEST_METHOD'];
 //pasando checando si existe el uri y metodo
-$router->route($uri, $method);
+$router->route($uri);//, $method);

@@ -255,4 +255,43 @@ el archivo helpers.php ya no es necesario
         $listing = $this->db->query("SELECT * FROM listings WHERE id=:id", $params)->fetch();
         loadView('listings/show', ['listing' => $listing]);
 
-104
+104 - errorcontroler
+    -se creo el controlador del error y los tipos de errores son metodos estaticos
+        -esto es para no crear un objeto por cada error
+    - en homeController 
+        use App\Controllers\ErrorController
+        ErrorController::notfound()
+
+105 - handling route params
+
+    -en routes.php 
+        $router->get('/listing/{id},'ListingController@show')
+
+    -en index.php
+        -se borra la obtenicion del method para que se obtenga directamente en los routes
+        -solo pasa uri
+    -en Ruter.php en route methods
+        -se obtiene el metodo enviado
+        - se loopea por las rutas existentes
+            -se obtienen los segmentos del uri enviado
+            -se obtiene los semgentos del uri del current route
+
+            -cuenta si el numero de segmentos es el mismo y si el metodo es el mismo
+                -se lopea los segmentso del uri enviado
+                    -si los segmentos del uri enviado No son lo mimso que el route a probar o si el segmento del uri enviado NO contiene {}
+                        -se sale 
+                    - si son lo mismo y tiene {}
+                        -se checa el parametro y se extrae a una variable 
+                        -se guarda el valor del paramtro enviado en un map quie contiene el nombre del parametro como key
+                    - se llama al controlador
+                    -se crea una variable con el metodo
+                    - se crea una instancia del objeto controler
+                    - se envia los parametros al metodo de la instancia
+                    
+
+108 - Validation
+    - se crean funciones para validar
+    - el post envie informacion y la valida. regresa si hay informacion invalida
+    $router->post('/listings', 'ListingController@store');
+
+112
