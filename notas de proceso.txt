@@ -294,4 +294,35 @@ el archivo helpers.php ya no es necesario
     - el post envie informacion y la valida. regresa si hay informacion invalida
     $router->post('/listings', 'ListingController@store');
 
-112
+112 -borrar
+    - se le agrega un hidden input al view
+        _method  value = 'delete'
+    - se modifico el router para aceptar hidden inputs
+        -input _method
+        if ($requestMethod === "POST" && isset($_POST['_method'])) {
+            //override the post method with custom method
+            $requestMethod = strtoupper($_POST['_method']);
+        }
+        -se obitnee el id mediante el uso de los parametros enviados en la uri
+        -checa si el metodo es post y si el hidden input es delete
+            -si hay hidden input el metodo se sobreescribe
+
+    -en el metodo del controlador
+        -se obtiene los parametros
+        - se envia un query para obtener los datos (para ver si siguen existiendo)
+        - si los datos no existe mistrar pagina de que no existen 
+        -si existen entonces enviar otro query pero esta ves de eliminar
+
+113 - flashing message
+    - using session superglobal
+    - session_start() en index.php en public
+    - en listing controller destoy()
+        //using session. flash message
+        $_SESSION['success_message'] = 'Listings deleted successfully';
+    -en el view crear un partial error
+         <?php if (isset($_SESSION['success_message'])) : ?>
+            <div class="message bg-green-100 p-3 my-3">
+                <?= $_SESSION['success_message'] ?>
+            </div>
+            <?php unset($_SESSION['success_message']); ?>
+        <?php endif; ?>

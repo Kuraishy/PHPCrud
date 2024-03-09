@@ -112,6 +112,13 @@ class Router
         //obtenciuon del metodo
         $requestMethod = $_SERVER['REQUEST_METHOD'];
 
+        //checking for hidden inputs (_method) para usar metodos como delete
+        //si el metodo fue post y tiene un hidden input _method
+        if ($requestMethod === "POST" && isset($_POST['_method'])) {
+            //override the post method with custom method
+            $requestMethod = strtoupper($_POST['_method']);
+        }
+
         foreach ($this->routes as $route) {
             //split current URI into segments
             $uriSegments = explode('/', trim($uri, '/'));

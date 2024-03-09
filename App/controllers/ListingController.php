@@ -73,6 +73,39 @@ class ListingController
 
 
     /**
+     * delete a listing
+     *
+     * @param array $params
+     * @return void
+     */
+    public function destroy($params)
+    {
+        //getting id from url
+        $id = $params['id'];
+        $params = [
+            'id' => $id,
+        ];
+
+        $listing = $this->db->query('SELECT * FROM listings WHERE id=:id', $params)->fetch();
+
+        //if listing doesnt exists
+        if (!$listing) {
+            ErrorController::notFound("listing not fouend");
+            return;
+        }
+
+        //there is a listing, delete it
+        // inspectAndDie($listing);
+        $this->db->query('DELETE FROM listings WHERE id=:id', $params);
+
+        //using session. flash message
+        $_SESSION['success_message'] = 'Listings deleted successfully';
+        // echo $_SESSION;
+        // ech $_SESSION['success_message'];
+        redirect("/listings");
+    }
+
+    /**
      * Store data in database
      * 
      * @return void
@@ -143,6 +176,9 @@ class ListingController
             // inspectAndDie($query);
             //insetando solo los datos que tenemos disponibles
             $this->db->query($query, $newListingData);
+
+
+
             redirect('/listings');
         }
 

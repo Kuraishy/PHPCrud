@@ -28,7 +28,7 @@ class Database
         //trying connection
         try {
             $this->conn = new PDO($dsn, $config['username'], $config['password'], $options);
-            echo "connected";
+            // echo "connected";
         } catch (PDOException $e) {
             // phpinfo();
             throw new Exception("Connexion fallida: {$e->getMessage()}");
