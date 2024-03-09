@@ -326,3 +326,12 @@ el archivo helpers.php ya no es necesario
             </div>
             <?php unset($_SESSION['success_message']); ?>
         <?php endif; ?>
+
+114 - editing
+    - create 2 routes
+        - edit = shows edit from
+        - update = update valuees
+    $router->get('/listings/edit/{id}', "ListingController@edit");
+    $router->put('/listings/{id}', 'ListingConstroller@update');
+    - crear los metodos en controller
+        - para el edit es lo mismo que el show pero el view es edit
