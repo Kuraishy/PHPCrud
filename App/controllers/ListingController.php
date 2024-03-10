@@ -216,4 +216,79 @@ class ListingController
         // inspectAndDie($listing);
         loadView('listings/edit', ['listing' => $listing]);
     }
+
+
+
+
+    /**
+     * Update a listing
+     *
+     * @param array $params
+     * @return void
+     */
+    public function update($params)
+    {
+        $id = $params['id'] ?? '';
+        // $id = $_GET['id'] ?? '';
+        $params = [
+            'id' => $id
+        ];
+        //llamando a db
+        $listing = $this->db->query("SELECT * FROM listings WHERE id=:id", $params)->fetch();
+
+        //checando si existe el id enviado
+        if (!$listing) {
+            ErrorController::notFound("listing not found");
+            return;
+        }
+
+        //seguridad, solo acepta estos fields
+        $allowedFields = ['title', 'description', 'salary', 'tags', 'company', 'address', 'city', 'state', 'phone', 'email', 'requirements', 'benefits'];
+
+        $updateValues = [];
+        $updateValues = array_intersect_key($_POST, array_flip($allowedFields));
+
+        //sanitizando fields
+        $updateValues = array_map('sanitize', $updateValues);
+
+        $requiredFields = ['title', 'description', 'email', 'city', 'state'];
+
+        $errors = [];
+        foreach ($requiredFields as $field) {
+            $val = Validation::string($updateValues[$field]);
+            if (empty($updateValues[$field]) || !$val) {
+                $errors[$field] = ucfirst($field) . ' is required';
+            }
+        }
+
+        if (!empty($errors)) {
+            loadView('listings/edit', ['listing' => $listing, 'errors' => $errors]);
+            exit;
+        } else {
+            //submit to db
+            // inspectAndDie("success");
+            $updateFields = [];
+            //looping to the keys of the values
+            foreach (array_keys($updateValues) as $field) {
+                $updateFields[] = "{$field} = :{$field}";
+            }
+            // inspect("Dsd");
+            // inspectAndDie($updateFields);
+            //makking string
+            $updateFields = implode(", ", $updateFields);
+            // inspectAndDie($updateFields);
+            $updateQuery = "UPDATE listings SET $updateFields WHERE id= :id";
+            // inspectAndDie($updateQuery);
+
+            //adding id
+            $updateValues['id'] = $id;
+            //sending to db
+            $this->db->query($updateQuery, $updateValues);
+            //making flash message
+            $_SESSION['success_message'] = 'listing updated';
+            redirect("/listings/" . $id);
+        }
+
+        // inspectAndDie($errors);
+    }
 }

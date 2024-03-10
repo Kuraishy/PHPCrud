@@ -335,3 +335,8 @@ el archivo helpers.php ya no es necesario
     $router->put('/listings/{id}', 'ListingConstroller@update');
     - crear los metodos en controller
         - para el edit es lo mismo que el show pero el view es edit
+
+115 - updating
+    - en edit view agregar un hidden input de put
+         <form method="POST" action="/listings/<?= $listing->id ?>">
+        <input type="hidden" name="_method" value="PUT">

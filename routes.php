@@ -14,7 +14,7 @@ $router->post('/listings', 'ListingController@store');
 
 //editing
 $router->get('/listings/edit/{id}', "ListingController@edit");
-$router->put('/listings/{id}', 'ListingConstroller@update');
+$router->put('/listings/{id}', 'ListingController@update');
 
 $router->get('/listings/{id}', 'ListingController@show');
 //delete request

@@ -22,12 +22,7 @@ loadPartial("navbar");
         <div class="text-center text-3xl mb-4 font-bold border border-gray-300 p-3">All Jobs</div>
         <!-- checando por sessioin flash -->
 
-        <?php if (isset($_SESSION['success_message'])) : ?>
-            <div class="message bg-green-100 p-3 my-3">
-                <?= $_SESSION['success_message'] ?>
-            </div>
-            <?php unset($_SESSION['success_message']); ?>
-        <?php endif; ?>
+        <?= loadPartial("message") ?>
 
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
