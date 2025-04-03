@@ -1,9 +1,9 @@
 version: '4' #docker version
 
-name: phpproyecto 
+name: phpproyectocrud
 services:
   backend:
-    container_name: phpBackend
+    container_name: phpBackend1
     image: php:apache #latest version
     volumes: #sync conection between container and host
       - "./:/var/www/html" #todo este folder al folder del container
@@ -11,7 +11,7 @@ services:
       #folder contenga todo el php y lo que esta fuera del folder no pueda
       #se accedido desde la pagina
     ports:
-      - 3001:80 #3001 local
+      - 3002:80 #3001 local
       - 443:443 # furure ssl trafic
     build: 
       context: .
@@ -19,14 +19,14 @@ services:
     
 
   database:
-    container_name: database
+    container_name: database1
     image: mysql:8.3.0
     environment:
       MYSQL_DATABASE: php_database
       MYSQL_ROOT_USER: root
       MYSQL_ROOT_PASSWORD: password
     ports:
-      - 3307:3306
+      - 3308:3306
     volumes:
       - ./initSQLDB/create_table.sql://docker-entrypoint-initdb.d/create_tables.sql
 
